@@ -1,0 +1,25 @@
+body {
+  background-color: #C1E1C2;
+}
+
+h1 {
+  color: #6A8A6B;
+}
+
+a {
+  color: #6A8A6B;
+}
+
+.navbar {
+  background-color: #7E9E7F;
+  padding: 15px;
+}
+
+.navbar a {
+  /* float: left; */
+  color: #E1F3E2;
+  text-align: center;
+  padding: 0px 16px;
+  text-decoration: none;
+  font-size: 1.5rem;
+}
