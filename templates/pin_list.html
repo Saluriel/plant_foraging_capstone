@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="home-hero">
+
+    <table class="table">
+        <tr>
+            <th><b>Plant</b></th>
+            <th><b>Date</b></th>
+            <th><b>Latitude</b></th>
+            <th><b>Longitude</b></th>
+        </tr>
+        {%for pin in plant_pins%}
+        <tr>
+            <td>{{pin.plant}}</td>
+            <td>{{pin.date}}</td>
+            <td>{{pin.latitude}}</td>
+            <td>{{pin.longitude}}</td>
+        </tr>
+        {%endfor%}
+
+
+    </table>
+</div>
+{% endblock %}

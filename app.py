@@ -1,10 +1,13 @@
 import os
-from flask import Flask, render_template, request, flash, redirect, session, g
+from flask import Flask, render_template, request, flash, redirect, session, g, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
+from datetime import datetime
+import json
 
-from forms import UserAddForm, LoginForm, EditUserForm
-from models import db, connect_db, User, Plant, PlantPin
+
+from forms import UserAddForm, LoginForm, EditUserForm, AddPinForm
+from models import db, connect_db, User, Plant, PlantPin, Serializer
 
 CURR_USER_KEY = "curr_user"
 
@@ -64,7 +67,7 @@ def signup():
                 username=form.username.data,
                 password=form.password.data,
                 email=form.email.data,
-                location=form.location.data or User.location.default.arg,
+                location=form.location.data,
             )
             db.session.commit()
 
@@ -153,4 +156,61 @@ def homepage():
 
     else:
         return render_template('home-anon.html')
+
+
+# Map related routes
+
+@app.route("/map", methods=["GET", "POST"])
+def show_map_handle_pins():
+    """Shows a map and a form to add a pin (handled in JS)"""
+
+    if g.user:
+        form = AddPinForm()
+        plant_pins = PlantPin.query.all()
+       
+        return render_template('/maps/view_map.html', form=form, plant_pins=plant_pins)
+
+    else:
+        return render_template('home-anon.html')
+
+@app.route('/handle_map', methods=["POST"])
+def handle_map():
+    
+    if g.user:
+        if request.method == "POST":
+            received = request.get_json()
+            now = datetime.now()
+
+            user_id = g.user.id
+            date = now.strftime("%m/%d/%Y, %H:%M:%S")
+            plant = received["plant"]
+            plantPin = PlantPin(user_id = user_id, date = date, plant=plant, latitude=received["latitude"], longitude=received["longitude"])
+            print(plantPin)
+            db.session.add(plantPin)
+            db.session.commit()
+
+            result = {'latitude': received["latitude"], 'longitude':received["longitude"], 'plant': received["plant"]}
+        return jsonify(result)
+    else:
+        return redirect('/')
+
+@app.route('/view_pins')
+def view_pin_list():
+    if g.user:
+        plant_pins = PlantPin.query.all()
+        return render_template('pin_list.html', plant_pins=plant_pins)
+
+    else:
+        return redirect('/')
+
+@app.route('/api/pins')
+def load_map():
+    if g.user:
+        pins = PlantPin.query.all()
+        
+        return json.dumps(Serializer.serialize_list(pins))
+    
+    else:
+        return redirect('/')
+
     

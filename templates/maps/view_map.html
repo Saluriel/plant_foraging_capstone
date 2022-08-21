@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HERE Map with Custom Marker</title>
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.css">
+    <script src="https://unpkg.com/bootstrap"></script>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+    <center>
+        <nav class="navbar navbar-expand">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a href="/" class="navbar-brand">
+                        <img src="/static/leafpls.PNG" alt="logo" class='icon'>
+                        <span>PLANT THINGIE</span>
+                    </a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if not g.user %}
+                    <li><a href="/signup">Sign up</a></li>
+                    <li><a href="/login">Log in</a></li>
+                    {% else %}
+                    <li>
+                        <a href="/users/{{ g.user.id }}">
+                            {{ g.user.username }}
+                        </a>
+                    </li>
+                    <li><a href="/logout">Log out</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+        <div class="container">
+            {% for category, message in get_flashed_messages(with_categories=True) %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+
+            {% block content %}
+            {% endblock %}
+
+        </div>
+        <p id="map_info">
+
+        <form class='submit_form'>Input an address: <input type="text" class="location_input"></input><button
+                class="submit_location_button">Submit</button></form>
+        </p>
+
+        <div style="width: 80vw;height: 80vh;" id="mapContainer">
+        </div>
+    </center>
+</body>
+
+<!-- HERE JavaScript Libs & Style Sheets-->
+<link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+<script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+<script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+<script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+<script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!-- HERE JavaScript Libs & Style Sheets end-->
+<script src="/static/map.js"></script>
+
+</html>

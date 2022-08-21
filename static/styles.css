@@ -2,8 +2,9 @@ body {
   background-color: #C1E1C2;
 }
 
-h1 {
-  color: #6A8A6B;
+h1,
+h2 {
+  color: #537354;
 }
 
 a {
@@ -22,4 +23,20 @@ a {
   padding: 0px 16px;
   text-decoration: none;
   font-size: 1.5rem;
+}
+
+.btn {
+  background-color: #E1F3E2;
+  color: #6A8A6B;
+  border-color: #6A8A6B;
+}
+
+.btn:hover {
+  background-color: #6A8A6B;
+  color: #E1F3E2;
+  border-color: #6A8A6B;
+}
+
+.icon {
+  height: 50px;
 }

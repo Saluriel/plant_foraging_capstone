@@ -1,5 +1,6 @@
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.inspection import inspect
 
 bcrypt = Bcrypt()
 db = SQLAlchemy()
@@ -76,7 +77,23 @@ class PlantPin(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='cascade'))
-    plant_id = db.Column(db.Integer, db.ForeignKey('plants.id', ondelete='cascade'))
+    date = db.Column(db.Text, nullable=False)
+    plant = db.Column(db.Text, nullable=False)
     latitude = db.Column(db.Text, nullable=False)
     longitude = db.Column(db.Text, nullable=False)
+
+    def serialize(self):
+        s = Serializer.serialize(self)
+        del s['id']
+        return s
+
+
+
+class Serializer(object):
+    def serialize(self):
+        return {c: getattr(self, c) for c in inspect(self).attrs.keys()}
+
+    @staticmethod
+    def serialize_list(l):
+        return [m.serialize() for m in l]
     

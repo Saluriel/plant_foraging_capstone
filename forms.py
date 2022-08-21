@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField
+from wtforms import StringField, PasswordField, TextAreaField, HiddenField
 from wtforms.validators import Email, Length, InputRequired
 
 class UserAddForm(FlaskForm):
@@ -8,7 +8,7 @@ class UserAddForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired()])
     email = StringField('E-mail')
     password = PasswordField('Password (min. 6 characters)', validators=[Length(min=6)])
-    location = StringField('(Optional) Location', default='None Given')
+    location = StringField('(Optional) Location')
 
 class LoginForm(FlaskForm):
     """Login form."""
@@ -23,3 +23,10 @@ class EditUserForm(FlaskForm):
     email = StringField("New Email Address")
     location = StringField("New Location")
     password = StringField("Current Password", validators=[InputRequired()])
+
+class AddPinForm(FlaskForm):
+     """Form for adding a pin to the map"""
+     plant = StringField("Plant")
+     latitude = HiddenField("Latitude")
+     longitude = HiddenField("Longitude")
+
