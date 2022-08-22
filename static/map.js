@@ -65,6 +65,7 @@ submit_location_form.addEventListener('submit', async function handleLocationFor
             input.setAttribute("type", "text")
             button.setAttribute("class", "submit")
             button.innerText = "Submit"
+            div.innerText = "Plant Name"
             div.appendChild(input)
             div.append(button)
 

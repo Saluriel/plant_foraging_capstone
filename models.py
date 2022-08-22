@@ -21,6 +21,8 @@ class User(db.Model):
     email = db.Column(db.Text)
     location = db.Column(db.Text)
 
+    pins = db.relationship("PlantPin")
+
     @classmethod
     def signup(cls, username, email, password, location):
         """Sign up user.
@@ -59,17 +61,7 @@ class User(db.Model):
                 return user
 
         return False
-
-class Plant(db.Model):
-    """Plant model"""
-    
-    __tablename__ = "plants"
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    scientific_name = db.Column(db.Text, nullable=False)
-    common_name = db.Column(db.Text)
-    family = db.Column(db.Text)
-
+        
 class PlantPin(db.Model):
     """Model for the pins to show where plants are located"""
 
@@ -96,4 +88,15 @@ class Serializer(object):
     @staticmethod
     def serialize_list(l):
         return [m.serialize() for m in l]
+
+class Friends(db.Model):
+    """Model for friends"""
+
+    __tablename__='friends'
+
+    user_being_friended_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='cascade'),
+    primary_key=True)
+
+    user_friending_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='cascade'),
+    primary_key=True)
     

@@ -7,7 +7,7 @@ import json
 
 
 from forms import UserAddForm, LoginForm, EditUserForm, AddPinForm
-from models import db, connect_db, User, Plant, PlantPin, Serializer
+from models import db, connect_db, User, PlantPin, Serializer, Friends
 
 CURR_USER_KEY = "curr_user"
 
@@ -146,6 +146,14 @@ def edit_user(user_id):
     else: 
         form.process()      
         return render_template('/users/edit.html', form=form)
+
+@app.route('/users/<int:user_id>')
+def user_profile(user_id):
+    """renders the user profile"""
+    if g.user:
+        user = User.query.get_or_404(user_id)
+        return render_template('/users/profile.html', user=user)
+
         
 
 
@@ -175,6 +183,7 @@ def show_map_handle_pins():
 
 @app.route('/handle_map', methods=["POST"])
 def handle_map():
+    """Handles adding a pin to the database, returns json"""
     
     if g.user:
         if request.method == "POST":
@@ -196,6 +205,7 @@ def handle_map():
 
 @app.route('/view_pins')
 def view_pin_list():
+    """View a list of all the pins made"""
     if g.user:
         plant_pins = PlantPin.query.all()
         return render_template('pin_list.html', plant_pins=plant_pins)
@@ -205,6 +215,7 @@ def view_pin_list():
 
 @app.route('/api/pins')
 def load_map():
+    """Api page for the pins"""
     if g.user:
         pins = PlantPin.query.all()
         
@@ -213,4 +224,24 @@ def load_map():
     else:
         return redirect('/')
 
+@app.route("/pins/<int:pin_id>")
+def load_single_pin(pin_id):
+    """Loads a single pin on the map"""
+    if g.user:
+        pin = PlantPin.query.get_or_404(pin_id)
+        return render_template('single_pin.html', pin=pin)
+
+@app.route("/pins/delete/<int:pin_id>", methods=["GET", "POST"])
+def edit_pin(pin_id):
+    """Renders and handles deleting a pin"""
+    if g.user:
+        pin = PlantPin.query.get_or_404(pin_id)
+        db.session.delete(pin)
+        db.session.commit()
+        return redirect('/')
+            
+
+    else:
+        return redirect('/')
+        
     

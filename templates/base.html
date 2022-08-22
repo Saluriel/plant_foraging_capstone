@@ -17,11 +17,16 @@
     <nav class="navbar navbar-expand">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a href="/" class="navbar-brand">
-                    <img src="/static/leaf_icon.png" alt="logo" class='icon'>
-                    <span>PLANT PIN MAP</span>
-                </a>
+
+                <img src="/static/leafpls.PNG" alt="logo" class='icon'>
+                <span class="navbar-brand">Plant Pinning Map</span>
+
             </div>
+            <nav class="navbar">
+                <a href="/">Home</a>
+                <a href="/map">Map/Add Pin</a>
+                <a href="/view_pins">All Pins</a>
+            </nav>
             <ul class="nav navbar-nav navbar-right">
                 {% if not g.user %}
                 <li><a href="/signup">Sign up</a></li>

@@ -7,20 +7,18 @@
         <div class="card user-card">
 
             <div>
-                <a href="/users/{{ g.user.id }}" class="card-link">
-                    <p>@{{ g.user.username }}</p>
-                </a>
-                <a href="/map">View Map/Add Pin</a><br>
-                <a href="/view_pins">View All Pins List (no map)</a><br>
-                <a href="/edit/{{g.user.id}}">Edit user info</a><br>
+                Username:
+                {{user.username }}
             </div>
 
         </div>
         </p>
     </aside>
-    <h2>My Pins</h2>
-    <div class="home-hero">
 
+
+    <div class="home-hero">
+        <h2>{{user.username}}'s Pins</h2>
+        Click the plant name to see a map!
         <table class="table">
             <tr>
                 <th><b>Plant</b></th>
@@ -28,19 +26,14 @@
                 <th><b>Latitude</b></th>
                 <th><b>Longitude</b></th>
             </tr>
-            {%for pin in g.user.pins%}
+            {%for pin in user.pins%}
             <tr>
-                <td><a href="pins/{{pin.id}}">{{pin.plant}}</a></td>
+                <td><a href="/pins/{{pin.id}}">{{pin.plant}}</a></td>
                 <td>{{pin.date}}</td>
                 <td>{{pin.latitude}}</td>
                 <td>{{pin.longitude}}</td>
-                <td><a href="/pins/delete/{{pin.id}}" methods="GET"><button
-                            class="btn btn-primary btn-sm btn-block">Delete
-                        </button></a></td>
             </tr>
             {%endfor%}
-
-
         </table>
     </div>
 

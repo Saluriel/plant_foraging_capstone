@@ -50,10 +50,22 @@
             {% endblock %}
 
         </div>
-        <p id="map_info">
-
-        <form class='submit_form'>Input an address: <input type="text" class="location_input"></input><button
-                class="submit_location_button">Submit</button></form>
+        <p>
+        <h2>Showing map for:</h2><br>
+        <table class="table">
+            <tr>
+                <th><b>Plant</b></th>
+                <th><b>Date</b></th>
+                <th><b>Latitude</b></th>
+                <th><b>Longitude</b></th>
+            </tr>
+            <tr>
+                <td>{{pin.plant}}</td>
+                <td>{{pin.date}}</td>
+                <td>{{pin.latitude}}</td>
+                <td>{{pin.longitude}}</td>
+            </tr>
+        </table>
         </p>
 
         <div style="width: 80vw;height: 80vh;" id="mapContainer">
@@ -70,6 +82,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <!-- HERE JavaScript Libs & Style Sheets end-->
-<script src="/static/map.js"></script>
+<script type="text/javascript">
+    var lat = {{ pin.latitude }}
+    var lng = {{ pin.longitude }}
+</script>
+<script src="/static/single_pin.js"></script>
 
 </html>

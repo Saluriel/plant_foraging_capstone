@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="home-hero">
+    <h2>All pins</h2>
+    <p>Click on the plant name to see the map and pin for that entry!</p>
 
     <table class="table">
         <tr>
@@ -11,7 +13,7 @@
         </tr>
         {%for pin in plant_pins%}
         <tr>
-            <td>{{pin.plant}}</td>
+            <td><a href="/pins/{{pin.id}}">{{pin.plant}}</a></td>
             <td>{{pin.date}}</td>
             <td>{{pin.latitude}}</td>
             <td>{{pin.longitude}}</td>
