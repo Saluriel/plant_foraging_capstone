@@ -88,15 +88,4 @@ class Serializer(object):
     @staticmethod
     def serialize_list(l):
         return [m.serialize() for m in l]
-
-class Friends(db.Model):
-    """Model for friends"""
-
-    __tablename__='friends'
-
-    user_being_friended_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='cascade'),
-    primary_key=True)
-
-    user_friending_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='cascade'),
-    primary_key=True)
     

@@ -53,9 +53,9 @@ def signup():
     """Handle user signup.
     Create new user and add to DB. Redirect to home page.
 
-    If form not valid, present form.
+    If form not valid, re-present form.
 
-    If the there already is a user with that username: flash message
+    If the there is already a user with that username: flash message
     and re-present form.
     """
 
@@ -73,7 +73,7 @@ def signup():
 
         except IntegrityError:
             flash("Username already taken", 'danger')
-            return render_template('users/sgnup.html', form=form)
+            return render_template('users/signup.html', form=form)
 
         do_login(user)
 
@@ -84,7 +84,7 @@ def signup():
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
-    """Handle user login."""
+    """Shows the login form and handles user login."""
 
     form = LoginForm()
 
@@ -113,7 +113,7 @@ def logout():
 # General User Routes:
 @app.route('/edit/<user_id>', methods=["GET", "POST"])
 def edit_user(user_id):
-    """Handles editing the user's information"""
+    """Shows form for and handles editing the user's information"""
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
@@ -149,16 +149,14 @@ def edit_user(user_id):
 
 @app.route('/users/<int:user_id>')
 def user_profile(user_id):
-    """renders the user profile"""
+    """Renders the user's profile"""
     if g.user:
         user = User.query.get_or_404(user_id)
         return render_template('/users/profile.html', user=user)
 
-        
-
-
 @app.route('/')
 def homepage():
+    """Renders the homepage for logged in users and a sign up message for not logged in users"""
     if g.user:
         return render_template('homepage.html')
 
@@ -167,10 +165,9 @@ def homepage():
 
 
 # Map related routes
-
 @app.route("/map", methods=["GET", "POST"])
 def show_map_handle_pins():
-    """Shows a map and a form to add a pin (handled in JS)"""
+    """Renders a map"""
 
     if g.user:
         plant_pins = PlantPin.query.all()
@@ -217,7 +214,7 @@ def view_pin_list():
 
 @app.route('/api/pins')
 def load_map():
-    """Api page for the pins"""
+    """Api page for the pins so that JS can access them"""
     if g.user:
         pins = PlantPin.query.all()
         
@@ -241,8 +238,7 @@ def edit_pin(pin_id):
         db.session.delete(pin)
         db.session.commit()
         return redirect('/')
-            
-
+        
     else:
         return redirect('/')
         

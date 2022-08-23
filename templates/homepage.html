@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="row">
-
     <aside class="col-md-4 col-lg-3 col-sm-12" id="home-aside">
         <p>
         <div class="card user-card">
@@ -14,13 +13,11 @@
                 <a href="/view_pins">View All Pins List (no map)</a><br>
                 <a href="/edit/{{g.user.id}}">Edit user info</a><br>
             </div>
-
         </div>
         </p>
     </aside>
     <h2>My Pins</h2>
     <div class="home-hero">
-
         <table class="table">
             <tr>
                 <th><b>Plant</b></th>
@@ -39,13 +36,7 @@
                         </button></a></td>
             </tr>
             {%endfor%}
-
-
         </table>
     </div>
-
-
-
-
 </div>
 {% endblock %}
