@@ -1,6 +1,0 @@
-{% extends 'base.html' %}
-{% block content %}
-<h2>Are you sure you want to delete the pin for {{pin.plant}} at lat: {{pin.latitude}} lng: {{pin.longitude}}?</h2>
-<a href="/pins/delete/{{pin.id}}"><button class="btn btn-primary btn-sm btn-block">Delete
-    </button></a>
-{% endblock %}

@@ -96,11 +96,17 @@ submit_location_form.addEventListener('submit', async function handleLocationFor
                         const icon = new H.map.Icon('/static/leafpls.PNG');
 
                         // Create a marker using the previously instantiated icon:
-                        let marker = new H.map.Marker(LocationOfMarker, { icon: icon }, { data: plant });
+                        let marker = new H.map.Marker(LocationOfMarker, { icon: icon, data: plant });
 
                         // Add the marker to the map:
                         map.addObject(marker);
+                        bubble.close()
+
+                    },
+                    error: function () {
+                        return alert("Please add a plant name")
                     }
+
 
                 });
                 if (evt.target.data) {
@@ -138,10 +144,3 @@ submit_location_form.addEventListener('submit', async function handleLocationFor
     map_container.prepend(`Showing map for ${resp.data.items[0].address.label}`)
 }
 )
-
-
-
-
-
-
-

@@ -24,9 +24,3 @@ class EditUserForm(FlaskForm):
     location = StringField("New Location")
     password = StringField("Current Password", validators=[InputRequired()])
 
-class AddPinForm(FlaskForm):
-     """Form for adding a pin to the map"""
-     plant = StringField("Plant")
-     latitude = HiddenField("Latitude")
-     longitude = HiddenField("Longitude")
-

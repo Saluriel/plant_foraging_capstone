@@ -6,7 +6,7 @@ from datetime import datetime
 import json
 
 
-from forms import UserAddForm, LoginForm, EditUserForm, AddPinForm
+from forms import UserAddForm, LoginForm, EditUserForm
 from models import db, connect_db, User, PlantPin, Serializer, Friends
 
 CURR_USER_KEY = "curr_user"
@@ -173,10 +173,9 @@ def show_map_handle_pins():
     """Shows a map and a form to add a pin (handled in JS)"""
 
     if g.user:
-        form = AddPinForm()
         plant_pins = PlantPin.query.all()
        
-        return render_template('/maps/view_map.html', form=form, plant_pins=plant_pins)
+        return render_template('/maps/view_map.html', plant_pins=plant_pins)
 
     else:
         return render_template('home-anon.html')
@@ -188,18 +187,21 @@ def handle_map():
     if g.user:
         if request.method == "POST":
             received = request.get_json()
-            now = datetime.now()
+            if received["plant"] == '':
+                return error('no')
+            else:
+                now = datetime.now()
 
-            user_id = g.user.id
-            date = now.strftime("%m/%d/%Y, %H:%M:%S")
-            plant = received["plant"]
-            plantPin = PlantPin(user_id = user_id, date = date, plant=plant, latitude=received["latitude"], longitude=received["longitude"])
-            print(plantPin)
-            db.session.add(plantPin)
-            db.session.commit()
+                user_id = g.user.id
+                date = now.strftime("%m/%d/%Y, %H:%M:%S")
+                plant = received["plant"]
+                plantPin = PlantPin(user_id = user_id, date = date, plant=plant, latitude=received["latitude"], longitude=received["longitude"])
+                print(plantPin)
+                db.session.add(plantPin)
+                db.session.commit()
 
-            result = {'latitude': received["latitude"], 'longitude':received["longitude"], 'plant': received["plant"]}
-        return jsonify(result)
+                result = {'latitude': received["latitude"], 'longitude':received["longitude"], 'plant': received["plant"]}
+            return jsonify(result)
     else:
         return redirect('/')
 
@@ -208,7 +210,7 @@ def view_pin_list():
     """View a list of all the pins made"""
     if g.user:
         plant_pins = PlantPin.query.all()
-        return render_template('pin_list.html', plant_pins=plant_pins)
+        return render_template('/maps/pin_list.html', plant_pins=plant_pins)
 
     else:
         return redirect('/')
@@ -229,7 +231,7 @@ def load_single_pin(pin_id):
     """Loads a single pin on the map"""
     if g.user:
         pin = PlantPin.query.get_or_404(pin_id)
-        return render_template('single_pin.html', pin=pin)
+        return render_template('/maps/single_pin.html', pin=pin)
 
 @app.route("/pins/delete/<int:pin_id>", methods=["GET", "POST"])
 def edit_pin(pin_id):
