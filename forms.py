@@ -22,5 +22,5 @@ class EditUserForm(FlaskForm):
     username = StringField("New Username")
     email = StringField("New Email Address")
     location = StringField("New Location")
-    password = StringField("Current Password", validators=[InputRequired()])
+    password = PasswordField("Current Password", validators=[InputRequired()])
 
