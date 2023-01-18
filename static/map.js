@@ -48,15 +48,17 @@ submit_location_form.addEventListener('submit', async function handleLocationFor
         // Log 'tap' and 'mouse' events:
         // console.log(evt.type, evt.currentPointer.type, evt.target.f.Y.lat, evt.target.f.Y.lng);
         if (evt.target.data) {
-            let bubble = new H.ui.InfoBubble({ lng: evt.target.a.lng, lat: evt.target.a.lat }, {
+            console.log(evt.target)
+
+            let bubble = new H.ui.InfoBubble({ lat: evt.target.a.lat, lng: evt.target.a.lng }, {
                 content: evt.target.data
             });
             // Add info bubble to the UI:
             ui.addBubble(bubble);
 
         } else {
-            let latitude = evt.target.f.Y.lat
-            let longitude = evt.target.f.Y.lng
+            let latitude = evt.target.c.a.position.lat
+            let longitude = evt.target.c.a.position.lng
 
 
             let button = document.createElement("button")
@@ -69,8 +71,7 @@ submit_location_form.addEventListener('submit', async function handleLocationFor
             div.appendChild(input)
             div.append(button)
 
-
-            let bubble = new H.ui.InfoBubble({ lng: evt.target.f.Y.lng, lat: evt.target.f.Y.lat }, {
+            let bubble = new H.ui.InfoBubble({ lat: evt.target.c.a.position.lat, lng: evt.target.c.a.position.lng }, {
                 content: div
             });
 
@@ -79,6 +80,7 @@ submit_location_form.addEventListener('submit', async function handleLocationFor
 
             button.addEventListener('click', function addPlant(e) {
                 e.preventDefault()
+                console.log('input value', input.value)
                 const plant = input.value
                 const dict_values = { plant, latitude, longitude }
                 const s = JSON.stringify(dict_values);
@@ -93,9 +95,11 @@ submit_location_form.addEventListener('submit', async function handleLocationFor
                     success: function (result) {
                         let LocationOfMarker = { lat: result.latitude, lng: result.longitude };
                         // Create a marker icon from an image URL:
+                        console.log("creating the map icon")
                         const icon = new H.map.Icon('/static/leafpls.PNG');
 
                         // Create a marker using the previously instantiated icon:
+                        console.log("setting location")
                         let marker = new H.map.Marker(LocationOfMarker, { icon: icon, data: plant });
 
                         // Add the marker to the map:
@@ -127,7 +131,7 @@ submit_location_form.addEventListener('submit', async function handleLocationFor
 
     for (let data of pin_resp.data) {
         let LocationOfMarker = { lat: data.latitude, lng: data.longitude };
-        // Create a marker icon from an image URLn:
+        // Create a marker icon from an image URL:
         const icon = new H.map.Icon('/static/leafpls.PNG');
         // Create a marker using the previously instantiated icon:
         let marker = new H.map.Marker(LocationOfMarker, { icon: icon, data: data.plant });

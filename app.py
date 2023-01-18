@@ -184,8 +184,9 @@ def handle_map():
     if g.user:
         if request.method == "POST":
             received = request.get_json()
+            print("RECEIVED DATA", received)
             if received["plant"] == '':
-                return error('no')
+                return error('Plant must be named')
             else:
                 now = datetime.now()
 
@@ -193,10 +194,8 @@ def handle_map():
                 date = now.strftime("%m/%d/%Y, %H:%M:%S")
                 plant = received["plant"]
                 plantPin = PlantPin(user_id = user_id, date = date, plant=plant, latitude=received["latitude"], longitude=received["longitude"])
-                print(plantPin)
                 db.session.add(plantPin)
                 db.session.commit()
-
                 result = {'latitude': received["latitude"], 'longitude':received["longitude"], 'plant': received["plant"]}
             return jsonify(result)
     else:
